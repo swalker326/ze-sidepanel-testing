@@ -1,0 +1,56 @@
+{
+  "name": "ze-host-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ze-host-app/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "web",
+        "outputPath": "dist/apps/ze-host-app",
+        "index": "apps/ze-host-app/src/index.html",
+        "main": "apps/ze-host-app/src/main.tsx",
+        "tsConfig": "apps/ze-host-app/tsconfig.app.json",
+        "rspackConfig": "apps/ze-host-app/rspack.config.js",
+        "assets": [
+          "apps/ze-host-app/src/favicon.ico",
+          "apps/ze-host-app/src/assets"
+        ]
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/rspack:dev-server",
+      "options": {
+        "buildTarget": "ze-host-app:build:development"
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "ze-host-app:build:production"
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "ze-host-app:build",
+        "spa": true
+      }
+    }
+  }
+}
